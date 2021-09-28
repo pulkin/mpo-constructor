@@ -1,2 +1,3 @@
 # mpo-constructor
-Created with CodeSandbox
+
+A web app for testing matrix product operators
