@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      PUBLIC_URL: mpo-constructor
+      PUBLIC_URL: 
     steps:
     - uses: actions/checkout@v2
 
