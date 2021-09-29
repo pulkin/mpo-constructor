@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      PUBLIC_URL: testing-testing
+      PUBLIC_URL: https://pulkin.github.io/mpo-constructor
     steps:
     - uses: actions/checkout@v2
 
