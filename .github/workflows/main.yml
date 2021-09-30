@@ -18,8 +18,8 @@ jobs:
     
     - name: Build
       run: |
-    	npm i
-    	npm ci
+        npm i
+        npm ci
         npm run build
         echo "$PUBLIC_URL" > build/CNAME
         git config user.name github-actions
