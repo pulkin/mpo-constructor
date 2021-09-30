@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      PUBLIC_URL: mpo.pulk.in
+      PUBLIC_URL: https://mpo.pulk.in
     steps:
     - uses: actions/checkout@v2
     
@@ -21,7 +21,7 @@ jobs:
         npm i
         npm ci
         npm run build
-        echo "$PUBLIC_URL" > build/CNAME
+        echo "$PUBLIC_URL" | awk -F[/:] '{print $4}' > build/CNAME
         git config user.name github-actions
         git config user.email github-actions@github.com
         git --work-tree build add --all
