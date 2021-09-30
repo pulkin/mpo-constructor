@@ -12,9 +12,14 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      PUBLIC_URL: https://pulkin.github.io/mpo-constructor
+      PUBLIC_URL: mpo.pulk.in
     steps:
     - uses: actions/checkout@v2
+
+    - name: create CNAME
+      run: |
+        mkdir build
+        echo "$PUBLIC_URL" > build/CNAME
 
     - name: Deploy react app to github pages
       uses: tanwanimohit/deploy-react-to-ghpages@v1.0.1
