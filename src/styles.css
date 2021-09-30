@@ -216,3 +216,8 @@
   padding: 3px;
   margin: 2px;
 }
+
+.product-term sub, sup {
+  font-size: 60%;
+}
+
