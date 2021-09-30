@@ -26,5 +26,16 @@ export function computeTT(board, num) {
   let tt = Array(num).fill(board);
   tt[0] = rhs;
   tt[num - 1] = lhs;
-  return tt.reduce(matvec)[0];
+  return tt.reduce(matvec)[0].map(simplify);
 }
+
+function simplify(term) {
+  const separator = "·";
+  const ignore = "1";
+  let result = [];
+  for (const [index, element] of term.split(separator).entries()) {
+    if (element !== ignore) result.push(element + "<sub>" + index + "</sub>");
+  }
+  return result.join(separator);
+}
+
