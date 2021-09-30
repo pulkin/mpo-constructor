@@ -67,16 +67,18 @@ class MainPanel extends React.Component {
             label="sites: "
           />
         </div>
-        <div className="product-term">H =</div>
-        {terms.map((value, index) => {
-          return (
-            <div
-              key={index}
-              className="product-term"
-              dangerouslySetInnerHTML={{ __html: value }}
-            />
-          );
-        })}
+        <div className="product">H =</div>
+        <div className="product-block">
+          {terms.map((value, index) => {
+            return (
+              <div
+                key={index}
+                className="product product-term"
+                dangerouslySetInnerHTML={{ __html: value }}
+              />
+            );
+          })}
+        </div>
       </div>
     );
   }
@@ -85,3 +87,4 @@ class MainPanel extends React.Component {
 export default function App() {
   return <MainPanel />;
 }
+

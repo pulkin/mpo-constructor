@@ -211,10 +211,26 @@
   content: "";
 }
 
-.product-term {
+.product {
   float: left;
-  padding: 3px;
-  margin: 2px;
+  height: 30px;
+  line-height: 30px;
+}
+
+.product-block {
+  float: none;
+  overflow: hidden;
+}
+
+.product-term {
+  padding-left: 12pt;
+  padding-right: 12pt;
+  min-width: 80px;
+  border-bottom: 1px solid #0000;
+}
+
+.product-term:hover {
+  border-bottom: 1px solid black;
 }
 
 .product-term sub, sup {
