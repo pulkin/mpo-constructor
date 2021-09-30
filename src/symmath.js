@@ -1,4 +1,6 @@
 export function matvec(v, M) {
+  const tbc = "...";
+  const max_terms = 100;
   let result = [];
   for (let i = 0; i < M.length; i++) {
     let row = M[i];
@@ -6,10 +8,19 @@ export function matvec(v, M) {
     for (let j = 0; j < row.length; j++) {
       let M_item = row[j];
       let v_item = v[j];
+      let do_exit = false;
       if (M_item && v_item) {
         for (let k = 0; k < v_item.length; k++) {
+          if (terms.length >= max_terms || v_item[k] === tbc) {
+            terms.push(tbc);
+            do_exit = true;
+            break;
+          }
           terms.push(M_item + "·" + v_item[k]);
         }
+      }
+      if (do_exit) {
+        break;
       }
     }
     result.push(terms);
@@ -30,6 +41,7 @@ export function computeTT(board, num) {
 }
 
 function simplify(term) {
+  if (term === "...") return term;
   const separator = "·";
   const ignore = "1";
   let result = [];
@@ -38,4 +50,5 @@ function simplify(term) {
   }
   return result.join(separator);
 }
+
 
