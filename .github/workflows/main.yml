@@ -20,6 +20,10 @@ jobs:
       run: |
         mkdir build
         echo "$PUBLIC_URL" > build/CNAME
+        ls build
 
     - name: Deploy react app to github pages
       uses: tanwanimohit/deploy-react-to-ghpages@v1.0.1
+
+    - name: post
+      run: ls build
