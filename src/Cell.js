@@ -1,5 +1,6 @@
 import React from "react";
 import { useDropdownMenu, useDropdownToggle, Dropdown } from "react-overlays";
+import NumberScroll from "./NumberScroll.js";
 
 function Menu({ operators, onItemChoose }) {
   const [props, { toggle }] = useDropdownMenu({
@@ -79,9 +80,7 @@ const DropdownButton = ({
 };
 
 export function Cell(props) {
-  let classNames = "cell cell-dropdown";
-  if (props.isLastRole) classNames += " cell-role-end";
-  else if (props.isFirstRole) classNames += " cell-role-start";
+  let classNames = "cell cell-dropdown cell-matrix cell-no-role";
   return (
     <DropdownButton
       className={classNames}
@@ -96,26 +95,11 @@ export class Board extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      size: parseInt(this.props.boardSize, 10),
-      board: this.emptyVMatrix(this.props.boardSize)
+      board: this.props.board,
+      site_len: parseInt(this.props.site_len, 10)
     };
-    this.handlePlus = this.handlePlus.bind(this);
-    this.handleMinus = this.handleMinus.bind(this);
-  }
-
-  emptyVMatrix(size) {
-    let result = [];
-    for (let i = 0; i < size; i++) {
-      let r2 = [];
-      result.push(r2);
-      for (let j = 0; j < size; j++) {
-        r2.push("");
-      }
-    }
-    result[0][0] = "1";
-    result[0][size - 1] = "A";
-    result[size - 1][size - 1] = "1";
-    return result;
+    this.handleSiteLenUpdate = this.handleSiteLenUpdate.bind(this);
+    this.handleSiteOffsetUpdate = this.handleSiteOffsetUpdate.bind(this);
   }
 
   handleUpdate(i, j, val) {
@@ -124,63 +108,42 @@ export class Board extends React.Component {
     this.setState({
       board: board
     });
-    this.notifyListeners(board);
+    this.notifyListeners(board, null);
   }
 
-  notifyListeners(board) {
+  notifyListeners(board, site_len) {
     if (this.props.handleUpdate) {
-      this.props.handleUpdate(board);
+      if (board === null) board = this.state.board;
+      if (site_len === null) site_len = this.state.site_len;
+      this.props.handleUpdate(board, site_len);
     }
   }
 
-  componentDidMount() {
-    this.notifyListeners(this.state.board);
+  handleSiteLenUpdate(len) {
+    this.setState({ site_len: len });
+    this.notifyListeners(null, len);
   }
 
-  handlePlus() {
-    let size = this.state.size + 1;
-    let board = this.state.board.map((row) => {
-      row.splice(-1, 0, "");
-      return row;
-    });
-    let lrow = Array(size);
-    lrow.fill("");
-    board.splice(-1, 0, lrow);
-    this.setState({
-      size: size,
-      board: board
-    });
-    this.notifyListeners(board);
+  handleSiteOffsetUpdate(offset) {
+    this.setState({ site_offset: offset });
   }
 
-  handleMinus() {
-    let size = this.state.size - 1;
-    if (size > 0) {
-      let board = this.state.board.map((row) => {
-        row.splice(-2, 1);
-        return row;
-      });
-      board.splice(-2, 1);
-      this.setState({
-        size: size,
-        board: board
-      });
-      this.notifyListeners(board);
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.board !== prevProps.board) {
+      this.setState({ board: this.props.board });
     }
   }
 
   render() {
     let board_items = [];
-    let size = this.state.size;
-    for (let i = 0; i < size; i++) {
-      for (let j = 0; j < size; j++) {
+    for (let i = 0; i < this.state.board.length; i++) {
+      let row = this.state.board[i];
+      for (let j = 0; j < row.length; j++) {
         board_items.push(
           <Cell
-            key={"c" + (i * size + j).toString()}
-            onChange={this.handleUpdate.bind(this, j, i)}
-            value={this.state.board[j][i]}
-            isLastRole={i === size - 1}
-            isFirstRole={j === 0}
+            key={"c" + i.toString() + "/" + j.toString()}
+            onChange={this.handleUpdate.bind(this, i, j)}
+            value={row[j]}
             options={this.props.mTerms}
           />
         );
@@ -190,28 +153,45 @@ export class Board extends React.Component {
     this.boardItems = board_items;
     return (
       <div className="board-wrapper">
-        <div className="board-title">
-          <p>
-            H<sub>i</sub> =
-          </p>
+        <div className="board-wrapper-equation">
+          <div className="board-title">
+            <p>
+              H
+              <sub>
+                {this.props.site_offset}..
+                {this.props.site_offset + this.state.site_len - 1}
+              </sub>{" "}
+              =
+            </p>
+          </div>
+          <div className="board-wrapper-matrix">
+            <div className="board-lbracket" />
+            <div className="board">{board_items}</div>
+            <div className="board-rbracket" />
+          </div>
         </div>
-        <div className="board-size-controls">
-          <button className="cell cell-small" onClick={this.handlePlus} key="+">
-            +
+        <div className="board-wrapper-equation">
+          <NumberScroll
+            min="1"
+            max="99"
+            onChange={this.handleSiteLenUpdate}
+            label="sites: "
+          />
+          <button className="cell cell-special" disabled>
+            ▲
           </button>
-          <div className="clear" />
+          <button className="cell cell-special" disabled>
+            ▼
+          </button>
           <button
-            className="cell cell-small"
-            onClick={this.handleMinus}
-            key="-"
+            className="cell cell-special"
+            onClick={this.props.handleClone}
           >
-            -
+            ⎘
           </button>
-        </div>
-        <div className="board-matrix-wrapper">
-          <div className="board-lbracket" />
-          <div className="board">{board_items}</div>
-          <div className="board-rbracket" />
+          <button className="cell cell-caution" disabled>
+            🗑
+          </button>
         </div>
       </div>
     );

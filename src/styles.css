@@ -28,18 +28,16 @@
   width: 5px;
 }
 
-.board-size-controls {
-  display: inline-block;
-  vertical-align: top;
-  padding: 3px;
-}
-
 .board-wrapper {
   display: flex;
-  padding: 3px;
+  flex-direction: column;
 }
 
-.board-matrix-wrapper {
+.board-wrapper-equation {
+  display: flex;
+}
+
+.board-wrapper-matrix {
   display: flex;
   padding: 3px;
 }
@@ -50,17 +48,23 @@
   align-items: center;
 }
 
+.board-title p {
+  margin: 3;
+}
+
 .cell {
-  float: left;
-  width: 45px;
-  height: 45px;
-  line-height: 40px;
+  width: 40px;
+  height: 40px;
   text-align: center;
   cursor: pointer;
-  background: #ddf;
-  color: black;
-  border: 1px solid #0001;
-  opacity: 0.6;
+  background: transparent;
+  color: inherit;
+  border: none;
+  transition: 0.1s;
+}
+
+.cell-matrix {
+  float: left;
 }
 
 .cell-small {
@@ -70,13 +74,22 @@
   border-radius: 0px;
 }
 
-.cell:hover,
-.cell:focus-within {
-  opacity: 1;
+.cell-hsplit {
+  height: 20px;
 }
 
-.cell:active {
+.cell:hover:enabled,
+.cell:focus-within {
+  color: white;
+  background: #4c72b0;
+}
+
+.cell:active:enabled {
   border: 1px solid red;
+}
+
+.cell:disabled {
+  opacity: 0.6;
 }
 
 .operator-panel {
@@ -162,40 +175,46 @@
   color: white;
 }
 
-.cell-role-start {
-  background: #ada;
+.cell-caution {
+  background: #f55;
+  color: black;
 }
 
-.cell-role-end {
-  background: #daa;
-}
+/* ------------ */
+/* NumberScroll */
+/* ------------ */
 
-.cell-scroll,
-.cell-scroll * {
+.scroll-container,
+.scroll-container label,
+input {
   cursor: ns-resize;
 }
 
-.cell-scroll input {
+.scroll-container input {
   border: none;
   height: 100%;
   width: 45px;
   padding: 0px;
-  background-color: #0000;
+  background-color: transparent;
   color: inherit;
   text-align: center;
 }
 
-.cell-scroll input:focus {
+.scroll-container input:focus {
   outline: none;
 }
 
-.cell-scroll label {
+.scroll-container label {
   margin-left: 5px;
 }
 
-.cell-invalid input {
+.scroll-container-invalid input {
   color: red;
 }
+
+/* ------------ */
+/* ------------ */
+/* ------------ */
 
 .cell-flex {
   width: -moz-fit-content;
@@ -233,7 +252,7 @@
   border-bottom: 1px solid black;
 }
 
-.product-term sub, sup {
+.product-term sub,
+sup {
   font-size: 60%;
 }
-

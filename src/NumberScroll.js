@@ -23,6 +23,8 @@ export default class NumberScroll extends React.Component {
     };
     this.handleScroll = this.handleScroll.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handlePlus = this.handlePlus.bind(this);
+    this.handleMinus = this.handleMinus.bind(this);
   }
 
   maybeUpdate(new_val) {
@@ -51,6 +53,14 @@ export default class NumberScroll extends React.Component {
     this.maybeUpdate(this.state.val - Math.sign(e.deltaY));
   }
 
+  handlePlus(e) {
+    this.maybeUpdate(this.state.val + 1);
+  }
+
+  handleMinus(e) {
+    this.maybeUpdate(this.state.val - 1);
+  }
+
   handleChange(e) {
     let e_val = e.target.value;
     let new_val = filterInt(e_val);
@@ -70,9 +80,9 @@ export default class NumberScroll extends React.Component {
   }
 
   render() {
-    let classes = "cell cell-scroll cell-flex cell-special";
+    let classes = "scroll-container cell-flex cell-special";
     if (this.state.val !== this.state.visible_val)
-      classes = classes + " cell-invalid";
+      classes = classes + " scroll-container-invalid";
     return (
       <div
         className={classes}
@@ -86,6 +96,12 @@ export default class NumberScroll extends React.Component {
           onChange={this.handleChange}
           value={this.state.visible_val}
         />
+        <button className="cell" onClick={this.handlePlus}>
+          +
+        </button>
+        <button className="cell" onClick={this.handleMinus}>
+          -
+        </button>
       </div>
     );
   }

@@ -11,12 +11,15 @@ export function matvec(v, M) {
       let do_exit = false;
       if (M_item && v_item) {
         for (let k = 0; k < v_item.length; k++) {
-          if (terms.length >= max_terms || v_item[k] === tbc) {
-            terms.push(tbc);
-            do_exit = true;
-            break;
+          let v_item_term = v_item[k];
+          if (v_item_term) {
+            if (terms.length >= max_terms || v_item_term === tbc) {
+              terms.push(tbc);
+              do_exit = true;
+              break;
+            }
+            terms.push(M_item + "·" + v_item_term);
           }
-          terms.push(M_item + "·" + v_item[k]);
         }
       }
       if (do_exit) {
@@ -28,15 +31,18 @@ export function matvec(v, M) {
   return result;
 }
 
-export function computeTT(board, num) {
-  let lhs = [board[0]];
-  let rhs = board.map((row) => {
-    let last = row[row.length - 1];
+export function computeTT(mpo_terms) {
+  if (mpo_terms.length === 1) {
+    let term = mpo_terms[0][0].slice(-1)[0];
+    if (term) return [simplify(term)];
+    return [];
+  }
+  let lhs = [mpo_terms[0][0]]; // the first column of the first MPO
+  let rhs = mpo_terms.slice(-1)[0].map((row) => {
+    let last = row.slice(-1)[0];
     return last ? [last] : null;
   });
-  let tt = Array(num).fill(board);
-  tt[0] = rhs;
-  tt[num - 1] = lhs;
+  let tt = [rhs, ...mpo_terms.slice(1, -1), lhs];
   return tt.reduce(matvec)[0].map(simplify);
 }
 
@@ -48,7 +54,6 @@ function simplify(term) {
   for (const [index, element] of term.split(separator).entries()) {
     if (element !== ignore) result.push(element + "<sub>" + index + "</sub>");
   }
-  return result.join(separator);
+  if (result.length === 0) return "1";
+  else return result.join(separator);
 }
-
-
