@@ -84,20 +84,16 @@ class MainPanel extends React.Component {
         }
       ]
     };
-    this.handleUpdate = this.handleUpdate.bind(this);
-    this.handleClone = this.handleClone.bind(this);
     this.handleMPOSizeUpdate = this.handleMPOSizeUpdate.bind(this);
   }
 
   handleUpdate(ix, board, len) {
-    console.log("handleUpdate", ix);
     let new_mpo = [...this.state.mpo];
     new_mpo[ix] = { matrix: board, copies: len };
     this.setState({ mpo: new_mpo });
   }
 
   handleClone(ix) {
-    console.log("handleClone", ix);
     let new_mpo = [...this.state.mpo];
     new_mpo.splice(ix, 0, {
       copies: 1,
@@ -106,8 +102,19 @@ class MainPanel extends React.Component {
     this.setState({ mpo: new_mpo });
   }
 
+  handleDelete(ix) {
+    let new_mpo = [...this.state.mpo];
+    new_mpo.splice(ix, 1);
+    this.setState({ mpo: new_mpo });
+  }
+
+  handleSwap(ix, ix2) {
+    let new_mpo = [...this.state.mpo];
+    [new_mpo[ix], new_mpo[ix2]] = [new_mpo[ix2], new_mpo[ix]];
+    this.setState({ mpo: new_mpo });
+  }
+
   handleMPOSizeUpdate(new_size) {
-    console.log("handleMPOSizeUpdate", new_size);
     this.setState({
       mpo: this.state.mpo.map((el) => {
         return {
@@ -148,7 +155,13 @@ class MainPanel extends React.Component {
               site_len={mpo.copies}
               handleUpdate={this.handleUpdate.bind(this, ix)}
               handleClone={this.handleClone.bind(this, ix)}
+              handleDelete={this.handleDelete.bind(this, ix)}
+              handleMoveUp={this.handleSwap.bind(this, ix, ix - 1)}
+              handleMoveDown={this.handleSwap.bind(this, ix, ix + 1)}
               mTerms={default_operators}
+              deleteable={this.state.mpo.length > 1}
+              canMoveUp={ix > 0}
+              canMoveDown={ix < this.state.mpo.length - 1}
             />
           );
         })}

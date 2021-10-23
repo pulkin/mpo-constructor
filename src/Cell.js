@@ -177,10 +177,18 @@ export class Board extends React.Component {
             onChange={this.handleSiteLenUpdate}
             label="sites: "
           />
-          <button className="cell cell-special" disabled>
+          <button
+            className="cell cell-special"
+            onClick={this.props.handleMoveUp}
+            disabled={!this.props.canMoveUp}
+          >
             ▲
           </button>
-          <button className="cell cell-special" disabled>
+          <button
+            className="cell cell-special"
+            onClick={this.props.handleMoveDown}
+            disabled={!this.props.canMoveDown}
+          >
             ▼
           </button>
           <button
@@ -189,7 +197,11 @@ export class Board extends React.Component {
           >
             ⎘
           </button>
-          <button className="cell cell-caution" disabled>
+          <button
+            className="cell cell-caution"
+            onClick={this.props.handleDelete}
+            disabled={!this.props.deleteable}
+          >
             🗑
           </button>
         </div>
