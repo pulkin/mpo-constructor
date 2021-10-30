@@ -80,7 +80,7 @@ export default class NumberScroll extends React.Component {
   }
 
   render() {
-    let classes = "scroll-container cell-flex cell-special";
+    let classes = "scroll-container cell-flex";
     if (this.state.val !== this.state.visible_val)
       classes = classes + " scroll-container-invalid";
     return (
@@ -96,10 +96,18 @@ export default class NumberScroll extends React.Component {
           onChange={this.handleChange}
           value={this.state.visible_val}
         />
-        <button className="cell" onClick={this.handlePlus}>
+        <button
+          className="cell"
+          onClick={this.handlePlus}
+          disabled={this.state.val === this.state.max}
+        >
           +
         </button>
-        <button className="cell" onClick={this.handleMinus}>
+        <button
+          className="cell"
+          onClick={this.handleMinus}
+          disabled={this.state.val === this.state.min}
+        >
           -
         </button>
       </div>

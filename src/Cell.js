@@ -152,7 +152,46 @@ export class Board extends React.Component {
     }
     this.boardItems = board_items;
     return (
-      <div className="board-wrapper">
+      <div className={"board-wrapper accent-" + this.props.accent}>
+        <div className="board-wrapper-controls">
+          <NumberScroll
+            min="1"
+            max="99"
+            onChange={this.handleSiteLenUpdate}
+            label="sites: "
+          />
+          <button
+            className="cell push"
+            title="Swap upwards"
+            onClick={this.props.handleMoveUp}
+            disabled={!this.props.canMoveUp}
+          >
+            ▲
+          </button>
+          <button
+            className="cell"
+            title="Swap downwards"
+            onClick={this.props.handleMoveDown}
+            disabled={!this.props.canMoveDown}
+          >
+            ▼
+          </button>
+          <button
+            className="cell"
+            title="Duplicate"
+            onClick={this.props.handleClone}
+          >
+            ⎘
+          </button>
+          <button
+            className="cell cell-caution"
+            title="Remove"
+            onClick={this.props.handleDelete}
+            disabled={!this.props.deleteable}
+          >
+            🗑
+          </button>
+        </div>
         <div className="board-wrapper-equation">
           <div className="board-title">
             <p>
@@ -169,41 +208,6 @@ export class Board extends React.Component {
             <div className="board">{board_items}</div>
             <div className="board-rbracket" />
           </div>
-        </div>
-        <div className="board-wrapper-equation">
-          <NumberScroll
-            min="1"
-            max="99"
-            onChange={this.handleSiteLenUpdate}
-            label="sites: "
-          />
-          <button
-            className="cell cell-special"
-            onClick={this.props.handleMoveUp}
-            disabled={!this.props.canMoveUp}
-          >
-            ▲
-          </button>
-          <button
-            className="cell cell-special"
-            onClick={this.props.handleMoveDown}
-            disabled={!this.props.canMoveDown}
-          >
-            ▼
-          </button>
-          <button
-            className="cell cell-special"
-            onClick={this.props.handleClone}
-          >
-            ⎘
-          </button>
-          <button
-            className="cell cell-caution"
-            onClick={this.props.handleDelete}
-            disabled={!this.props.deleteable}
-          >
-            🗑
-          </button>
         </div>
       </div>
     );

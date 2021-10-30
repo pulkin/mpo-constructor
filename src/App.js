@@ -80,7 +80,8 @@ class MainPanel extends React.Component {
             ["1", "A"],
             ["", "1"]
           ],
-          copies: 1
+          copies: 1,
+          uid: 0,
         }
       ]
     };
@@ -89,15 +90,25 @@ class MainPanel extends React.Component {
 
   handleUpdate(ix, board, len) {
     let new_mpo = [...this.state.mpo];
-    new_mpo[ix] = { matrix: board, copies: len };
+    new_mpo[ix].matrix = board;
+    new_mpo[ix].copies = len;
     this.setState({ mpo: new_mpo });
   }
 
   handleClone(ix) {
     let new_mpo = [...this.state.mpo];
-    new_mpo.splice(ix, 0, {
+
+    // Determine unoccupied color
+    let slots = [];
+    new_mpo.forEach(mpo => {slots[mpo.uid] = true});
+    let i = 0;
+    for (i=0; i<slots.length; i++) if (slots[i] === undefined) break;
+    console.log(new_mpo, slots, i);
+
+    new_mpo.splice(ix + 1, 0, {
       copies: 1,
-      matrix: resizeBoard(new_mpo[ix].matrix)
+      matrix: resizeBoard(new_mpo[ix].matrix),
+      uid: i,
     });
     this.setState({ mpo: new_mpo });
   }
@@ -119,7 +130,8 @@ class MainPanel extends React.Component {
       mpo: this.state.mpo.map((el) => {
         return {
           copies: el.copies,
-          matrix: resizeBoard(el.matrix, new_size)
+          matrix: resizeBoard(el.matrix, new_size),
+          uid: el.uid,
         };
       })
     });
@@ -159,6 +171,7 @@ class MainPanel extends React.Component {
               handleMoveUp={this.handleSwap.bind(this, ix, ix - 1)}
               handleMoveDown={this.handleSwap.bind(this, ix, ix + 1)}
               mTerms={default_operators}
+              accent={mpo.uid}
               deleteable={this.state.mpo.length > 1}
               canMoveUp={ix > 0}
               canMoveDown={ix < this.state.mpo.length - 1}

@@ -31,10 +31,24 @@
 .board-wrapper {
   display: flex;
   flex-direction: column;
+  border-left: 6px solid black;
+  margin-top: 12px;
+  background-color: #00000010;
 }
 
 .board-wrapper-equation {
   display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.board-wrapper-controls {
+  display: flex;
+  width: 100%;
+}
+
+.push {
+  margin-left: auto;
 }
 
 .board-wrapper-matrix {
@@ -89,7 +103,7 @@
 }
 
 .cell:disabled {
-  opacity: 0.6;
+  opacity: 0.2;
 }
 
 .operator-panel {
@@ -168,11 +182,6 @@
   -webkit-appearance: none;
   -moz-appearance: none;
   text-overflow: "";
-}
-
-.cell-special {
-  background: #456;
-  color: white;
 }
 
 .cell-caution {
@@ -255,4 +264,68 @@ input {
 .product-term sub,
 sup {
   font-size: 60%;
+}
+
+/* ------- */
+/* Accents */
+/* ------- */
+
+.accent-1 {
+  border-color: #286acc;
+  background-color: #286acc10;
+}
+
+.accent-2 {
+  border-color: #cc2859;
+  background-color: #cc285910;
+}
+
+.accent-3 {
+  border-color: #49cc28;
+  background-color: #49cc2810;
+}
+
+.accent-4 {
+  border-color: #cc8a28;
+  background-color: #cc8a2810;
+}
+
+.accent-5 {
+  border-color: #cc28bb;
+  background-color: #cc28bb10;
+}
+
+.accent-6 {
+  border-color: #289bcc;
+  background-color: #289bcc10;
+}
+
+.accent-7 {
+  border-color: #cc5928;
+  background-color: #cc592810;
+}
+
+.accent-8 {
+  border-color: #cc288a;
+  background-color: #cc288a10;
+}
+
+.accent-9 {
+  border-color: #2839cc;
+  background-color: #2839cc10;
+}
+
+.accent-10 {
+  border-color: #7acc28;
+  background-color: #7acc2810;
+}
+
+.accent-11 {
+  border-color: #cc2828;
+  background-color: #cc282810;
+}
+
+.accent-12 {
+  border-color: #ab28cc;
+  background-color: #ab28cc10;
 }
