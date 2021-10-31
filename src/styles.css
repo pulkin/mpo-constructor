@@ -185,8 +185,12 @@
 }
 
 .cell-caution {
-  background: #f55;
-  color: black;
+  color: #f55;
+}
+
+.cell-symbol {
+  font-size: 14pt;
+  font-weight: bold;
 }
 
 /* ------------ */

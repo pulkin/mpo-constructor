@@ -104,7 +104,7 @@ export class Board extends React.Component {
 
   handleUpdate(i, j, val) {
     let board = this.state.board;
-    board[i][j] = val === "∅" ? null : val;
+    board[i][j] = val === "∅" ? "" : val;
     this.setState({
       board: board
     });
@@ -157,11 +157,12 @@ export class Board extends React.Component {
           <NumberScroll
             min="1"
             max="99"
+            val={this.props.site_len}
             onChange={this.handleSiteLenUpdate}
             label="sites: "
           />
           <button
-            className="cell push"
+            className="cell cell-symbol push"
             title="Swap upwards"
             onClick={this.props.handleMoveUp}
             disabled={!this.props.canMoveUp}
@@ -169,7 +170,7 @@ export class Board extends React.Component {
             ▲
           </button>
           <button
-            className="cell"
+            className="cell cell-symbol"
             title="Swap downwards"
             onClick={this.props.handleMoveDown}
             disabled={!this.props.canMoveDown}
@@ -177,14 +178,14 @@ export class Board extends React.Component {
             ▼
           </button>
           <button
-            className="cell"
+            className="cell cell-symbol"
             title="Duplicate"
             onClick={this.props.handleClone}
           >
             ⎘
           </button>
           <button
-            className="cell cell-caution"
+            className="cell cell-caution cell-symbol"
             title="Remove"
             onClick={this.props.handleDelete}
             disabled={!this.props.deleteable}

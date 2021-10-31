@@ -97,14 +97,14 @@ export default class NumberScroll extends React.Component {
           value={this.state.visible_val}
         />
         <button
-          className="cell"
+          className="cell cell-symbol"
           onClick={this.handlePlus}
           disabled={this.state.val === this.state.max}
         >
           +
         </button>
         <button
-          className="cell"
+          className="cell cell-symbol"
           onClick={this.handleMinus}
           disabled={this.state.val === this.state.min}
         >

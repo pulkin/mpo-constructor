@@ -18,7 +18,7 @@ export function matvec(v, M) {
               do_exit = true;
               break;
             }
-            terms.push(M_item + "·" + v_item_term);
+            terms.push(v_item_term + "·" + M_item);
           }
         }
       }
@@ -37,12 +37,11 @@ export function computeTT(mpo_terms) {
     if (term) return [simplify(term)];
     return [];
   }
-  let lhs = [mpo_terms[0][0]]; // the first column of the first MPO
-  let rhs = mpo_terms.slice(-1)[0].map((row) => {
-    let last = row.slice(-1)[0];
-    return last ? [last] : null;
-  });
-  let tt = [rhs, ...mpo_terms.slice(1, -1), lhs];
+  let lhs = mpo_terms[0].map((item) => {
+    return [item[0]];
+  }); // the first column of the first MPO
+  let rhs = [mpo_terms.slice(-1)[0].slice(-1)[0]];
+  let tt = [lhs, ...mpo_terms.slice(1, -1), rhs];
   return tt.reduce(matvec)[0].map(simplify);
 }
 

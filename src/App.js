@@ -70,21 +70,62 @@ function resizeBoard(board, new_size) {
   });
 }
 
+function encodeMPO(mpo) {
+  return [
+    mpo.mpo_size,
+    ...mpo.mpo.map((item) => {
+      return [
+        item.copies,
+        ...item.matrix.flat().map((x) => {
+          return Buffer(x).toString("base64").replace(/=+$/, "");
+        })
+      ].join(".");
+    })
+  ].join("-");
+}
+
+function decodeMPO(str) {
+  let mpo_size, mpo;
+  [mpo_size, ...mpo] = str.split("-");
+  mpo_size = parseInt(mpo_size, 10);
+  mpo = mpo.map((item, item_index) => {
+    let copies = 0,
+      plain,
+      matrix = [];
+    [copies, ...plain] = item.split(".");
+    copies = parseInt(copies, 10);
+    plain = plain.map((x) => {
+      return Buffer(x + "==", "base64").toString();
+    });
+    for (let i = 0; i < mpo_size; i++)
+      matrix[i] = plain.slice(i * mpo_size, (i + 1) * mpo_size);
+    return { copies: copies, matrix: matrix, uid: item_index };
+  });
+  return { mpo_size: mpo_size, mpo: mpo };
+}
+
 class MainPanel extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      mpo: [
-        {
-          matrix: [
-            ["1", "A"],
-            ["", "1"]
-          ],
-          copies: 1,
-          uid: 0,
-        }
-      ]
-    };
+
+    const queryParams = new URLSearchParams(window.location.search);
+    try {
+      this.state = decodeMPO(queryParams.get("mpo"));
+    } catch (error) {
+      this.state = {
+        mpo_size: 2,
+        mpo: [
+          {
+            matrix: [
+              ["1", "A"],
+              ["", "1"]
+            ],
+            copies: 1,
+            uid: 0
+          }
+        ]
+      };
+    }
     this.handleMPOSizeUpdate = this.handleMPOSizeUpdate.bind(this);
   }
 
@@ -100,15 +141,16 @@ class MainPanel extends React.Component {
 
     // Determine unoccupied color
     let slots = [];
-    new_mpo.forEach(mpo => {slots[mpo.uid] = true});
+    new_mpo.forEach((mpo) => {
+      slots[mpo.uid] = true;
+    });
     let i = 0;
-    for (i=0; i<slots.length; i++) if (slots[i] === undefined) break;
-    console.log(new_mpo, slots, i);
+    for (i = 0; i < slots.length; i++) if (slots[i] === undefined) break;
 
     new_mpo.splice(ix + 1, 0, {
       copies: 1,
       matrix: resizeBoard(new_mpo[ix].matrix),
-      uid: i,
+      uid: i
     });
     this.setState({ mpo: new_mpo });
   }
@@ -131,13 +173,15 @@ class MainPanel extends React.Component {
         return {
           copies: el.copies,
           matrix: resizeBoard(el.matrix, new_size),
-          uid: el.uid,
+          uid: el.uid
         };
-      })
+      }),
+      mpo_size: new_size
     });
   }
 
   render() {
+    const encodedMPO = encodeMPO(this.state);
     let terms = [];
     if (this.state.mpo)
       terms = computeTT(
@@ -153,6 +197,7 @@ class MainPanel extends React.Component {
         <NumberScroll
           min="2"
           max="20"
+          val={this.state.mpo_size}
           onChange={this.handleMPOSizeUpdate}
           label="MPO size:"
         />
@@ -189,6 +234,14 @@ class MainPanel extends React.Component {
               />
             );
           })}
+        </div>
+        <div>
+          <a href={"?mpo=" + encodedMPO}>
+            <span role="img" aria-label="Permalink">
+              🔗
+            </span>{" "}
+            Permalink to this MPO
+          </a>
         </div>
       </div>
     );
