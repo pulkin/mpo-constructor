@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.css": "https://mpo.pulk.in/static/css/main.4a39bcad.chunk.css",
+    "main.js": "https://mpo.pulk.in/static/js/main.96a9425d.chunk.js",
+    "main.js.map": "https://mpo.pulk.in/static/js/main.96a9425d.chunk.js.map",
+    "runtime-main.js": "https://mpo.pulk.in/static/js/runtime-main.2373fac8.js",
+    "runtime-main.js.map": "https://mpo.pulk.in/static/js/runtime-main.2373fac8.js.map",
+    "static/js/2.85b4b651.chunk.js": "https://mpo.pulk.in/static/js/2.85b4b651.chunk.js",
+    "static/js/2.85b4b651.chunk.js.map": "https://mpo.pulk.in/static/js/2.85b4b651.chunk.js.map",
+    "index.html": "https://mpo.pulk.in/index.html",
+    "static/css/main.4a39bcad.chunk.css.map": "https://mpo.pulk.in/static/css/main.4a39bcad.chunk.css.map",
+    "static/js/2.85b4b651.chunk.js.LICENSE.txt": "https://mpo.pulk.in/static/js/2.85b4b651.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.2373fac8.js",
+    "static/js/2.85b4b651.chunk.js",
+    "static/css/main.4a39bcad.chunk.css",
+    "static/js/main.96a9425d.chunk.js"
+  ]
+}
