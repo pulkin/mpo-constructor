@@ -117,8 +117,8 @@ class MainPanel extends React.Component {
         mpo: [
           {
             matrix: [
-              ["1", "A"],
-              ["", "1"]
+              ["1", ""],
+              ["A", "1"]
             ],
             copies: 1,
             uid: 0

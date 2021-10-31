@@ -33,7 +33,7 @@ export function matvec(v, M) {
 
 export function computeTT(mpo_terms) {
   if (mpo_terms.length === 1) {
-    let term = mpo_terms[0][0].slice(-1)[0];
+    let term = mpo_terms[0].slice(-1)[0][0];
     if (term) return [simplify(term)];
     return [];
   }
